@@ -60,16 +60,11 @@ Widget build(BuildContext context) {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'YANGO',
-                style: TextStyle(
-                  color: Colors.red[700],
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.italic,
-                  letterSpacing: 0,
-                ),
+              Image.asset(
+               'assets/yango_logo_red.png',
+                height: 40,
               ),
+
               const Text(
                 '>Bingerville',
                 style: TextStyle(
