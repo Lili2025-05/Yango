@@ -1,203 +1,220 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'second_page.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
-  }
-}
 
-class HomePage extends StatelessWidget {
-  final List<String> serviceTitles = [
-    'Course',
-    'Location',
-    'Repas',
-    'Bon plans',
-  ];
-
-  final List<String> serviceAssets = [
-    'assets/course_image.avif',
-    'assets/location_image.avif',
-    'assets/repas_image.avif',
-    'assets/bonplans_image.jpeg',
-  ];
-
-  final List<String> verticalImages = [
-    'assets/news_item_1.jpeg',
-    'assets/news_item_2.png',
-    'assets/bruch.jpg',
-    'assets/restaurant.jpg',
-  ];
+class OnboardingPage1 extends StatelessWidget {
+  const OnboardingPage1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.all(16),
-          children: [
-            // Top Row: Logo + Icones
-            Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: AssetImage('assets/yango_logo_red.png'),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
-                Image.asset('assets/yango_pay_icon.jpg', height: 40),
-                Spacer(),
-                Icon(Icons.menu),
-              ],
-            ),
-            SizedBox(height: 4),
-            Text('> Bingerville', style: TextStyle(fontSize: 12)),
-            SizedBox(height: 12),
+      body: OnboardingPagePresenter(pages: [
+        OnboardingPageModel(
+          title: 'Fast, Fluid and Secure',
+          description: 'Enjoy the best of the world in the palm of your hands.',
+          imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
+          bgColor: Colors.indigo,
+        ),
+        OnboardingPageModel(
+          title: 'Connect with your friends.',
+          description: 'Connect with your friends anytime anywhere.',
+          imageUrl: 'https://i.ibb.co/LvmZypG/storefront-illustration-2.png',
+          bgColor: const Color(0xff1eb090),
+        ),
+        OnboardingPageModel(
+          title: 'Bookmark your favourites',
+          description:
+              'Bookmark your favourite quotes to read at a leisure time.',
+          imageUrl: 'https://i.ibb.co/420D7VP/building.png',
+          bgColor: const Color(0xfffeae4f),
+        ),
+        OnboardingPageModel(
+          title: 'Follow creators',
+          description: 'Follow your favourite creators to stay in the loop.',
+          imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
+          bgColor: Colors.purple,
+        ),
+      ]),
+    );
+  }
+}
 
-            // Search Bar
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.red.shade100,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Icon(Icons.search),
-                  SizedBox(width: 10),
-                  Expanded(child: Text('Où allons-nous ?')),
-                  Icon(Icons.mic),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: StadiumBorder(),
-                    ),
-                    child: Text('Search'),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
+class OnboardingPagePresenter extends StatefulWidget {
+  final List<OnboardingPageModel> pages;
+  final VoidCallback? onSkip;
+  final VoidCallback? onFinish;
 
-            // Services Grid
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: serviceTitles.length,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.8,
-              ),
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: Image.asset(serviceAssets[index], height: 50),
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      serviceTitles[index],
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            SizedBox(height: 20),
+  const OnboardingPagePresenter(
+      {Key? key, required this.pages, this.onSkip, this.onFinish})
+      : super(key: key);
 
-            // Section Populaire
-            Text(
-              'POPULAIRE',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            SizedBox(height: 12),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  SizedBox(width: 4),
-                  ...[
-                    'assets/news_item_1.jpeg',
-                    'assets/news_item_2.png',
-                    'assets/bruch.jpg',
-                    'assets/restaurant.jpg',
-                  ].map(
-                    (img) => Container(
-                      margin: EdgeInsets.only(right: 12),
-                      width: 200,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: AssetImage(img),
-                          fit: BoxFit.cover,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
+  @override
+  State<OnboardingPagePresenter> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPagePresenter> {
+  // Store the currently visible page
+  int _currentPage = 0;
+  // Define a controller for the pageview
+  final PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        color: widget.pages[_currentPage].bgColor,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                // Pageview to render each page
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: widget.pages.length,
+                  onPageChanged: (idx) {
+                    // Change current page when pageview changes
+                    setState(() {
+                      _currentPage = idx;
+                    });
+                  },
+                  itemBuilder: (context, idx) {
+                    final item = widget.pages[idx];
+                    return Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(32.0),
+                            child: Image.network(
+                              item.imageUrl,
+                            ),
                           ),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(item.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: item.textColor,
+                                        )),
+                              ),
+                              Container(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 280),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 8.0),
+                                child: Text(item.description,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: item.textColor,
+                                        )),
+                              )
+                            ]))
+                      ],
+                    );
+                  },
+                ),
+              ),
+
+              // Current page indicator
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.pages
+                    .map((item) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          width: _currentPage == widget.pages.indexOf(item)
+                              ? 30
+                              : 8,
+                          height: 8,
+                          margin: const EdgeInsets.all(2.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0)),
+                        ))
+                    .toList(),
+              ),
+
+              // Bottom buttons
+              SizedBox(
+                height: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        style: TextButton.styleFrom(
+                            visualDensity: VisualDensity.comfortable,
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          widget.onSkip?.call();
+                        },
+                        child: const Text("Skip")),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.comfortable,
+                          foregroundColor: Colors.white,
+                          textStyle: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      onPressed: () {
+                        if (_currentPage == widget.pages.length - 1) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SecondPage()),
+                          );
+                        } else {
+                          _pageController.animateToPage(_currentPage + 1,
+                              curve: Curves.easeInOutCubic,
+                              duration: const Duration(milliseconds: 250));
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            _currentPage == widget.pages.length - 1
+                                ? "Finish"
+                                : "Next",
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(_currentPage == widget.pages.length - 1
+                              ? Icons.done
+                              : Icons.arrow_forward),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Images verticales
-            ...verticalImages.map(
-              (img) => Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    image: AssetImage(img),
-                    fit: BoxFit.cover,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
                   ],
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+class OnboardingPageModel {
+  final String title;
+  final String description;
+  final String imageUrl;
+  final Color bgColor;
+  final Color textColor;
+
+  OnboardingPageModel(
+      {required this.title,
+      required this.description,
+      required this.imageUrl,
+      this.bgColor = Colors.blue,
+      this.textColor = Colors.white});
 }
