@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'bonplans.dart';
+import 'course.dart';
+import 'location.dart';
+import 'repas.dart';
+
 
 class SecondPage extends StatelessWidget {
   const SecondPage({super.key});
@@ -31,7 +36,7 @@ Widget build(BuildContext context) {
           children: [
             _buildTopBar(),
             _buildSearchBar(),
-            _buildServiceCategories(),
+            _buildServiceCategories(context),
             const Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
               child: Text(
@@ -127,7 +132,7 @@ Widget build(BuildContext context) {
     );
   }
 
-Widget _buildServiceCategories() {
+Widget _buildServiceCategories(BuildContext context) {
   final List<Map<String, String>> services = [
     {'title': 'Course', 'image': 'assets/course_image.png'},
     {'title': 'Location', 'image': 'assets/location_image.png'},
@@ -145,37 +150,45 @@ Widget _buildServiceCategories() {
       crossAxisSpacing: 20,
       childAspectRatio: 1,
       children: services.map((item) {
-        return _buildServiceItem(item['title']!, item['image']!);
+        return _buildServiceItem(context, item['title']!, item['image']!);
       }).toList(),
     ),
   );
 }
 
-
-Widget _buildServiceItem(String title, String imagePath) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
+Widget _buildServiceItem(BuildContext context, String title, String image) {
+  return GestureDetector(
+    onTap: () {
+      switch (title) {
+        case 'Course':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => CoursePage()));
+          break;
+        case 'Location':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => LocationPage()));
+          break;
+        case 'Repas':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => RepasPage()));
+          break;
+        case 'Bon plans':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => BonPlansPage()));
+          break;
+      }
+    },
+    child: Column(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey[200],
+            ),
           ),
         ),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    ],
+        SizedBox(height: 8),
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+      ],
+    ),
   );
 }
 
