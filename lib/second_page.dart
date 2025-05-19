@@ -170,7 +170,7 @@ Widget _buildServiceItem(BuildContext context, String title, String image) {
           Navigator.push(context, MaterialPageRoute(builder: (_) => RepasPage()));
           break;
         case 'Bon plans':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => BonPlansPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => EventsPage()));
           break;
       }
     },

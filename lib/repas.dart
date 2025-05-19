@@ -1,12 +1,40 @@
 import 'package:flutter/material.dart';
 
-
-
-class RepasPage  extends StatelessWidget {
+class RepasPage extends StatefulWidget {
   const RepasPage({Key? key}) : super(key: key);
 
   @override
+  State<RepasPage> createState() => _RepasPageState();
+}
+
+class _RepasPageState extends State<RepasPage> {
+  int _currentIndex = 0;
+
+  final List<String> _restaurantImages = [
+    'assets/restaurant1.jpg',
+    'assets/restaurant2.jpg',
+    'assets/restaurant3.jpg',
+    'assets/restaurant4.jpg',
+  ];
+
+  void _goToPrevious() {
+    setState(() {
+      _currentIndex = (_currentIndex - 2).clamp(0, _restaurantImages.length - 1);
+    });
+  }
+
+  void _goToNext() {
+    setState(() {
+      if (_currentIndex + 2 < _restaurantImages.length) {
+        _currentIndex += 2;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final imagesToShow = _restaurantImages.skip(_currentIndex).take(2).toList();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -19,25 +47,28 @@ class RepasPage  extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     const Expanded(
                       child: Text(
                         'QUE VOULEZ VOUS ?',
                         style: TextStyle(
+                          fontFamily: 'ProtestGuerrilla',
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0x8B000000),
+                          color: Color(0xFF480000),
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(width: 40), // Pour équilibrer le header
+                    const SizedBox(width: 40),
                   ],
                 ),
               ),
-              
-              // Categories en haut (icônes circulaires)
+
+              // Catégories circulaires
               SizedBox(
                 height: 80,
                 child: ListView(
@@ -53,12 +84,12 @@ class RepasPage  extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
-              // Premier plat principal (dessert)
+
+              // Dessert
               ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(33.0),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Image.asset(
@@ -69,100 +100,100 @@ class RepasPage  extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
-              // Burger King
+
+              // Burger
               ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(33.0),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Image.asset(
                     'assets/burger.jpeg',
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    height: 150,
+                    height: 200,
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
-              // Texte "RÉSERVEZ MAINTENANT!"
+
               const Text(
                 'RESERVEZ-MAINTENANT !',
                 style: TextStyle(
+                  fontFamily: 'ProtestGuerrilla',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0x8B000000),
+                  color: Color(0xFF480000),
                 ),
                 textAlign: TextAlign.center,
               ),
-              
+
               const SizedBox(height: 16),
-              
-              // Images restaurant avec flèche à droite
+
+              // Nouveau Row avec navigation gauche/droite
               Row(
                 children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 16.0, right: 8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12.0),
-                        child: Image.asset(
-                          'assets/restaurant1.jpg',
-                          height: 80,
-                          fit: BoxFit.cover,
+                  if (_currentIndex > 0)
+                    Container(
+                      margin: const EdgeInsets.only(left: 16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: _goToPrevious,
+                      ),
+                    ),
+
+                  for (var imagePath in imagesToShow)
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: Image.asset(
+                            imagePath,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12.0),
-                        child: Image.asset(
-                          'assets/restaurant2.jpg',
-                          height: 80,
-                          fit: BoxFit.cover,
-                        ),
+
+                  if (_currentIndex + 2 < _restaurantImages.length)
+                    Container(
+                      margin: const EdgeInsets.only(right: 16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        onPressed: _goToNext,
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_forward),
-                      onPressed: () {},
-                    ),
-                  ),
                 ],
               ),
-              
+
               const SizedBox(height: 16),
-              
-              // Bouton "Saisir plus d'informations"
+
               _buildActionButton(
                 text: 'Saisir plus d\'informations',
                 icon: Icons.add,
               ),
-              
+
               const SizedBox(height: 12),
-              
-              // Bouton "Ajouter un moyen de paiement"
+
               _buildActionButton(
                 text: 'Ajouter un moyen de paiement',
                 icon: Icons.add,
               ),
-              
+
               const SizedBox(height: 12),
-              
-              // Bouton "PASSEZ VOTRE COMMANDE!"
+
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -185,7 +216,7 @@ class RepasPage  extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -193,7 +224,7 @@ class RepasPage  extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildCategoryCircle(String imagePath) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -208,7 +239,7 @@ class RepasPage  extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildActionButton({required String text, required IconData icon}) {
     return Container(
       width: double.infinity,
@@ -218,10 +249,7 @@ class RepasPage  extends StatelessWidget {
         icon: Icon(icon, color: Colors.white),
         label: Text(
           text,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          ),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
