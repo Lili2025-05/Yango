@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'second_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -43,21 +45,21 @@ class EventsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
-        ),
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SecondPage()),
+                    (route) => false,
+                  );
+                },
+              ),
+
         title: Row(
           children: [
             Image.asset('assets/yango_logo_red.png', height: 30),
             const SizedBox(width: 12),
-            const Text(
-              'Alerte bon plan !',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
+            
           ],
         ),
         actions: [

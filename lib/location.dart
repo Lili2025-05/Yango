@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'second_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -45,10 +47,16 @@ class _LocationPageState extends State<LocationPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
-        ),
+        leading:  IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SecondPage()),
+                    (route) => false,
+                  );
+                },
+              ),
         title: Image.asset(
           'assets/yango_logo_red.png',
           height: 40,

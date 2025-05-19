@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'acceuil.dart';
+import 'welcome_page';
 
 // import 'pages/home_page.dart';
 // import 'pages/second_page.dart';
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Onboarding App',
+      title: 'Yango-App',
       debugShowCheckedModeBanner: false,
-      home: OnboardingPage1(), // On commence par l'onboarding
+      home: IntroVideoPage(), // On commence par l'onboarding
     );
   }
 }

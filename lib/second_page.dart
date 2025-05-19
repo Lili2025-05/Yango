@@ -4,8 +4,8 @@ import 'bonplans.dart';
 import 'course.dart';
 import 'location.dart';
 import 'repas.dart';
-
-
+// Import de la page Yangopay (à adapter selon ton fichier)
+import 'yangopay.dart';
 
 class SecondPage extends StatelessWidget {
   const SecondPage({super.key});
@@ -26,38 +26,37 @@ class SecondPage extends StatelessWidget {
 class VangoHomePage extends StatelessWidget {
   const VangoHomePage({super.key});
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: Colors.white,
-    body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTopBar(),
-            _buildSearchBar(),
-            _buildServiceCategories(context),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-              child: Text(
-                'POPULAIRE',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTopBar(context),  // <-- passé context ici
+              _buildSearchBar(),
+              _buildServiceCategories(context),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                child: Text(
+                  'POPULAIRE',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            _buildPopularSection(),
-          ],
+              _buildPopularSection(),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-
-  Widget _buildTopBar() {
+  Widget _buildTopBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
       child: Row(
@@ -67,10 +66,9 @@ Widget build(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-               'assets/yango_logo_red.png',
+                'assets/yango_logo_red.png',
                 height: 40,
               ),
-
               const Text(
                 '>Bingerville',
                 style: TextStyle(
@@ -80,7 +78,27 @@ Widget build(BuildContext context) {
               ),
             ],
           ),
-          const Icon(Icons.menu, size: 28),
+
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) =>  ProfileScreen()),
+                  );
+                },
+                child: Image.asset(
+                  'assets/yango_pay_icon.jpg', // <-- Logo Yangopay cliquable
+                  height: 38,
+                  width: 38,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Icon(Icons.menu, size: 28),
+            ],
+          ),
         ],
       ),
     );
@@ -133,70 +151,67 @@ Widget build(BuildContext context) {
     );
   }
 
-Widget _buildServiceCategories(BuildContext context) {
-  final List<Map<String, String>> services = [
-    {'title': 'Course', 'image': 'assets/course_image.png'},
-    {'title': 'Location', 'image': 'assets/location_image.png'},
-    {'title': 'Repas', 'image': 'assets/repas_image.png'},
-    {'title': 'Bon plans', 'image': 'assets/bonplans_image.jpeg'},
-  ];
+  Widget _buildServiceCategories(BuildContext context) {
+    final List<Map<String, String>> services = [
+      {'title': 'Course', 'image': 'assets/course_image.png'},
+      {'title': 'Location', 'image': 'assets/location_image.png'},
+      {'title': 'Repas', 'image': 'assets/repas_image.png'},
+      {'title': 'Bon plans', 'image': 'assets/bonplans_image.jpeg'},
+    ];
 
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 20,
-      crossAxisSpacing: 20,
-      childAspectRatio: 1,
-      children: services.map((item) {
-        return _buildServiceItem(context, item['title']!, item['image']!);
-      }).toList(),
-    ),
-  );
-}
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.count(
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+        childAspectRatio: 1,
+        children: services.map((item) {
+          return _buildServiceItem(context, item['title']!, item['image']!);
+        }).toList(),
+      ),
+    );
+  }
 
-Widget _buildServiceItem(BuildContext context, String title, String image) {
-  return GestureDetector(
-    onTap: () {
-      switch (title) {
-        case 'Course':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => CoursePage()));
-          break;
-        case 'Location':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => LocationPage()));
-          break;
-        case 'Repas':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => RepasPage()));
-          break;
-        case 'Bon plans':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => EventsPage()));
-          break;
-      }
-    },
-    child: Column(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200],
+  Widget _buildServiceItem(BuildContext context, String title, String image) {
+    return GestureDetector(
+      onTap: () {
+        switch (title) {
+          case 'Course':
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const CoursePage()));
+            break;
+          case 'Location':
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const LocationPage()));
+            break;
+          case 'Repas':
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const RepasPage()));
+            break;
+          case 'Bon plans':
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const EventsPage()));
+            break;
+        }
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200],
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 8),
-        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-      ],
-    ),
-  );
-}
-
-
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
 
   Widget _buildPopularSection() {
-    // Liste des offres populaires
     final List<Map<String, dynamic>> popularItems = [
       {
         'title': 'LUNCH MASTER',
@@ -220,9 +235,8 @@ Widget _buildServiceItem(BuildContext context, String title, String image) {
       },
     ];
 
-    return Container(
+    return SizedBox(
       height: 250,
-      // height: 180,
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         scrollDirection: Axis.horizontal,
@@ -238,7 +252,6 @@ Widget _buildServiceItem(BuildContext context, String title, String image) {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Image placeholder
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.asset(
@@ -246,9 +259,6 @@ Widget _buildServiceItem(BuildContext context, String title, String image) {
                     fit: BoxFit.cover,
                   ),
                 ),
-
-                
-                // Bottom text overlay
                 Positioned(
                   bottom: 0,
                   left: 0,
