@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'livraison.dart';
+
 class CoursePage extends StatefulWidget {
   const CoursePage({Key? key}) : super(key: key);
 
@@ -38,7 +40,8 @@ class _CoursePageState extends State<CoursePage> {
                     ),
                     children: [
                       TileLayer(
-                        urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        urlTemplate:
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                         subdomains: const ['a', 'b', 'c'],
                       ),
                     ],
@@ -64,189 +67,211 @@ class _CoursePageState extends State<CoursePage> {
               flex: 4,
               child: Container(
                 color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Titre
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'PLANIFIEZ VOTRE COURSE',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          'PLANIFIEZ VOTRE COURSE',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
 
-                    // Onglets Course / Livraison
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.red),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8.0),
-                                  bottomLeft: Radius.circular(8.0),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 12.0),
-                                  child: Text(
-                                    'Course',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8.0),
-                                  bottomRight: Radius.circular(8.0),
-                                ),
-                              ),
-                              child: const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 12.0),
-                                  child: Text(
-                                    'Livraison',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Zone de saisie destination
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(color: Colors.red),
-                        ),
+                      // Onglets Course / Livraison
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Row(
                           children: [
-                            const SizedBox(width: 12),
-                            const Icon(Icons.search, color: Colors.grey),
                             Expanded(
-                              child: TextField(
-                                controller: _searchController,
-                                decoration: const InputDecoration(
-                                  hintText: 'Destination...',
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8.0),
+                                    bottomLeft: Radius.circular(8.0),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child: const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                                    child: Text(
+                                      'Course',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LivraisonPage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(8.0),
+                                      bottomRight: Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 12.0),
+                                      child: Text(
+                                        'Livraison',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                    // Options de véhicules
-                    SizedBox(
-                      height: 120,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildVehicleOption(
-                            name: 'Chap Chap',
-                            price: '2000F',
-                            imagePath: 'assets/taxi_economique.jpeg',
-                            isSelected: _selectedVehicle == 'Chap Chap',
+                      // Champ de destination
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(color: Colors.red),
                           ),
-                          _buildVehicleOption(
-                            name: 'Confort',
-                            price: '3000F',
-                            imagePath: 'assets/taxi_confort.webp',
-                            isSelected: _selectedVehicle == 'Confort',
-                          ),
-                          _buildVehicleOption(
-                            name: 'Class',
-                            price: '4000F',
-                            imagePath: 'assets/taxi_premium.jpg',
-                            isSelected: _selectedVehicle == 'Class',
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Bouton commander
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  'Prêt à partir ?',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 12),
+                              const Icon(Icons.search, color: Colors.grey),
+                              Expanded(
+                                child: TextField(
+                                  controller: _searchController,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Destination...',
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 8.0),
                                   ),
                                 ),
-                                Text(
-                                  'Choisissez votre style',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 16),
+                            ],
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Action de commande
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0,
-                                vertical: 12.0,
-                              ),
-                            ),
-                            child: const Text(
-                              'Commander',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+
+                      const SizedBox(height: 16),
+
+                      // Choix de véhicules - corrigé avec scroll horizontal
+                      SizedBox(
+                        height: 140,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 16),
+                              _buildVehicleOption(
+                                name: 'Chap Chap',
+                                price: '2000F',
+                                imagePath: 'assets/taxi_economique.jpeg',
+                                isSelected: _selectedVehicle == 'Chap Chap',
+                              ),
+                              const SizedBox(width: 16),
+                              _buildVehicleOption(
+                                name: 'Confort',
+                                price: '3000F',
+                                imagePath: 'assets/taxi_confort.webp',
+                                isSelected: _selectedVehicle == 'Confort',
+                              ),
+                              const SizedBox(width: 16),
+                              _buildVehicleOption(
+                                name: 'Class',
+                                price: '4000F',
+                                imagePath: 'assets/taxi_premium.jpg',
+                                isSelected: _selectedVehicle == 'Class',
+                              ),
+                              const SizedBox(width: 16),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Bouton commander
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    'Prêt à partir ?',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Choisissez votre style',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Action de commande
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24.0,
+                                  vertical: 12.0,
+                                ),
+                              ),
+                              child: const Text(
+                                'Commander',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -273,7 +298,8 @@ class _CoursePageState extends State<CoursePage> {
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              border: isSelected ? Border.all(color: Colors.red, width: 2) : null,
+              border:
+                  isSelected ? Border.all(color: Colors.red, width: 2) : null,
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Image.asset(
