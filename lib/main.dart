@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Yango-App',
       debugShowCheckedModeBanner: false,
-      home: IntroVideoPage(), // On commence par l'onboarding
+      home: OnboardingSplash(), // ✅ Correct // On commence par l'onboarding
     );
   }
 }

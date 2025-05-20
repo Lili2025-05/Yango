@@ -1,59 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'second_page.dart';
+import 'dart:async';
+import 'second_page.dart'; // Assure-toi que ce fichier existe
 
-class IntroVideoPage extends StatefulWidget {
-  const IntroVideoPage({super.key});
+class OnboardingSplash extends StatefulWidget {
+  const OnboardingSplash({super.key});
 
   @override
-  State<IntroVideoPage> createState() => _IntroVideoPageState();
+  State<OnboardingSplash> createState() => _OnboardingSplashState();
 }
 
-class _IntroVideoPageState extends State<IntroVideoPage> {
-  late VideoPlayerController _controller;
-
+class _OnboardingSplashState extends State<OnboardingSplash> {
   @override
   void initState() {
     super.initState();
-
-    _controller = VideoPlayerController.asset('assets/m.mp4')
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.setLooping(false);
-        _controller.setVolume(0); // Vidéo sans son
-        _controller.play();
-      });
-
-    _controller.addListener(() {
-      final finished = _controller.value.position >= _controller.value.duration &&
-                       !_controller.value.isPlaying;
-
-      if (finished) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const SecondPage()),
-        );
-      }
+    // Attendre 6 secondes puis naviguer
+    Timer(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SecondPage()),
+      );
     });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEAE4E2), // Fond beige clair
+      backgroundColor: const Color(0xFFEAE4E2), // Fond beige doux
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : const CircularProgressIndicator(),
+        child: SizedBox.expand(
+          child: Image.asset(
+            'assets/app.jpg', // Assure-toi que ce fichier est bien dans assets
+            fit: BoxFit.cover, // ✅ Prend tout l'écran
+          ),
+        ),
       ),
     );
   }
